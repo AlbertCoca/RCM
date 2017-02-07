@@ -35,16 +35,22 @@ Queue* CuthillMcKee(Graph* G){
 	printf("Starting with node: %d\n", start);
 
 	//RMA
-	while(R->FrontIndex < 7){
+	while(R->FrontIndex < G->n-1){
+		//printf("R->FrontIndex: %d G->n-1: %d\n", R->FrontIndex, G->n-1);
 		QueueValue_t actual = QueuePeek(Q);
 
 		if(!QueueValueIsIn(R, actual)){
 			QueueInsert(R, actual);
 			neighbors = GetNeighbors(G, actual);
-			for(int i=GraphDegreeOfNode(G, actual); i >= 0; i--){
+			for(int i=GraphDegreeOfNode(G, actual)-1; i >= 0; i--){
 				if(!QueueValueIsIn(R, neighbors[i]))
 					QueueInsert(Q, neighbors[i]);
 			}
+			//printf("R:\n");
+			//QueuePrintSimple(R);
+			//printf("Q:\n");
+			//QueuePrintSimple(Q);
+			//getchar();
 		}
 
 		if(Q->FrontIndex == -1 && R->FrontIndex < 8){
@@ -57,8 +63,9 @@ Queue* CuthillMcKee(Graph* G){
 }
 
 int main (int argc, char *argv[]){
+	//Graph *T = LoadTestGraph();
 
-	Graph *T = LoadTestGraph();
+	Graph *T = LoadFromBinary("TestMatrix/spike/G3_circuit.bin");
 
 	GraphPrint(T, "Test");
 

@@ -66,6 +66,22 @@ int QueueIsEmpty(Queue *Q);
 
 void QueueIncreaseSize(Queue *Q);
 
+
+/*
+ * Return "True" if the value is in the Queue and 
+ * "False" if it is not.
+ */
 int QueueValueIsIn(Queue *Q, QueueValue_t value);
+
+/*
+ * Return "True" if the value is in the Queue and 
+ * "False" if it is not. Using binary search!
+ */
+int QueueValueIsInOptimized(Queue *Q, QueueValue_t value);
+
+/*
+ * Comparison function for binary Search and QuickSort.
+ */
+int cmpfunc (const void * a, const void * b);
 
 const QueueValue_t* QueueGetPointerToValues(Queue *Q);

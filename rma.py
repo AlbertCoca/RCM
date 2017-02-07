@@ -1,4 +1,5 @@
 import scipy.sparse as sp
+import scipy.io as IO
 import numpy as np
 import matplotlib.pylab as plt
 import networkx as nx
@@ -55,9 +56,14 @@ A = [[1,0,0,0,1,0,0,0],
 	 [0,0,0,1,0,0,1,0],
 	 [0,1,0,0,0,1,0,1]]
 
+A = IO.loadmat("TestMatrix/Matlab/ash85.mat");
+#A = sp.csr_matrix(A)
+print A;
+A = A['Problem'][0][0][1].tocsr()
+
 
 #Initialization
-A = sp.csr_matrix(A)
+#A = sp.csr_matrix(A)
 G = nx.from_numpy_matrix(np.matrix(A.todense()))
 
 #nx.draw(G, node_color='c',edge_color='k', with_labels=True)
@@ -69,7 +75,9 @@ start = getPerfiferalVertex(G)
 R = []
 Q = [start]
 
-while(len(R) < 8):
+n = len(A.toarray()[0])
+
+while(len(R) < n):
 	print "R:",R, "Q:",Q
 
 	if Q[0] not in R:
@@ -82,19 +90,21 @@ while(len(R) < 8):
 
 mapping = {}
 R = list(reversed(R))
-for i in range(8):
+for i in range(n):
 	mapping[R[i]] = i
 
 G = nx.relabel_nodes(G,mapping)
 
-for n in mapping:
-	print n, " - ", mapping[n]
+#for n in mapping:
+#	print n, " - ", mapping[n]
+
+#print R
 
 showMatrix(A.todense())
 showMatrix(nx.to_numpy_matrix(G))
 
 #plot
-nx.draw(G, node_color='c',edge_color='k', with_labels=True)
-plt.show()
+#nx.draw(G, node_color='c',edge_color='k', with_labels=True)
+#plt.show()
 
 

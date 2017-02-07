@@ -222,11 +222,12 @@ GraphInt* GetNeighbors(Graph *G, GraphInt node)
 
 
 	//Neighbors.
-	for(int i=0; i<n; i++)
+	for(int i=0; i<n; i++){
 		neighbors[i] = G->colind[G->rowptr[node]+i];
+	}
 
 	//Sorting by Degree.
-	QuickSortByDegree(neighbors, G, 0, n);
+	QuickSortByDegree(neighbors, G, 0, n-1);
 
 	return neighbors;
 }
@@ -243,8 +244,9 @@ void QuickSortByDegree(int *x, Graph *G, int first, int last)
 		while(GraphDegreeOfNode(G, x[i]) < GraphDegreeOfNode(G, x[pivot]) && i < last)
 			i++;
 
-		while(GraphDegreeOfNode(G, x[i]) > GraphDegreeOfNode(G, x[pivot]) && j > first)
+		while(GraphDegreeOfNode(G, x[i]) > GraphDegreeOfNode(G, x[pivot]) && j > i)
 			j--;
+
 		if(i>=j) break;
 
 		int aux;

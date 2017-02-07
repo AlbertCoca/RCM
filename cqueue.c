@@ -68,7 +68,11 @@ void QueueInsert(Queue *Q, QueueValue_t v)
 {
 	if ( QueueIsFull(Q) ) QueueIncreaseSize(Q);
 
-	Q->values[++Q->FrontIndex] = v;
+	for(int i = Q->FrontIndex; i >= 0; i--)
+		Q->values[i+1] = Q->values[i];
+
+	Q->values[0] = v;
+	Q->FrontIndex++;
 }
 
 QueueValue_t QueuePeek(Queue *Q)
@@ -109,6 +113,28 @@ int QueueValueIsIn(Queue *Q, QueueValue_t value)
 		if(value == Q->values[i]) return 1;
 	}
 	return 0;
+}
+
+int QueueValueIsInOptimized(Queue *Q, QueueValue_t value)
+{
+	//printf("Searching for %d\n", value );
+	QueueValue_t *v;
+	int n = Q->FrontIndex + 1;
+	v = malloc(sizeof(QueueValue_t)*n);
+
+	memcpy(v, Q->values, sizeof(QueueValue_t)*n);
+	qsort(v, n, sizeof(QueueValue_t), cmpfunc);
+
+	QueueValue_t *item = (QueueValue_t*) bsearch(&value, v, n, sizeof(QueueValue_t), cmpfunc);
+
+	if(item == NULL)return 0;
+	return 1;
+
+}
+
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a - *(int*)b );
 }
 
 
