@@ -25,26 +25,31 @@ Queue* CuthillMcKee(Graph* G){
 
 	Queue *Q = QueueInit( CQUEUE_DECIDE );
 	Queue *R = QueueInit( CQUEUE_DECIDE );
-
 	GraphInt* neighbors;
+	char *isInR;
+
+	isInR = (char*)malloc(sizeof(char)*G->n);
+	memset(isInR, '0', G->n);
 
 	GraphInt start = GetNodeWithLowerDegree(G, R);
 	QueueInsert(Q, start);
-
 
 	printf("Starting with node: %d\n", start);
 
 	//RMA
 	while(R->FrontIndex < G->n-1){
-		//printf("R->FrontIndex: %d G->n-1: %d\n", R->FrontIndex, G->n-1);
 		QueueValue_t actual = QueuePeek(Q);
 
-		if(!QueueValueIsIn(R, actual)){
+		if(isInR[actual]=='0'){
 			QueueInsert(R, actual);
+			isInR[actual] = '1';
 			neighbors = GetNeighbors(G, actual);
-			for(int i=GraphDegreeOfNode(G, actual)-1; i >= 0; i--){
-				if(!QueueValueIsIn(R, neighbors[i]))
+			for(int i=GraphDegreeOfNode(G, actual)-1; i >= 0; i--)
+			{
+				if(isInR[neighbors[i]]=='0'){
 					QueueInsert(Q, neighbors[i]);
+				}
+
 			}
 			//printf("R:\n");
 			//QueuePrintSimple(R);
@@ -67,11 +72,13 @@ int main (int argc, char *argv[]){
 
 	Graph *T = LoadFromBinary("TestMatrix/spike/G3_circuit.bin");
 
+	printf("Dimension of the matrix: %d \n", T->n);
+
 	GraphPrint(T, "Test");
 
 	Queue *R =  CuthillMcKee(T);
 
-	QueuePrintSimple(R);
+	//QueuePrintSimple(R);
 
 	ChangeGraphIndex(R->values, T);
 	GraphPrint(T, "Test After changing indexes");
