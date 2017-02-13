@@ -101,7 +101,7 @@ def export_csr2bin ( M, outputfilename):
     print 'Linear system was sucessfully exported: ', outputfilename
 
 if __name__ == "__main__":
-    A = IO.loadmat("Matlab/G3_circuit.mat");
+    A = IO.loadmat("Matlab/rgg_n_2_24_s0.mat");
     print A['Problem']
     A = A['Problem'][0][0][2].tocsr()
-    export_csr2bin( A, "spike/G3_circuit.bin")
+    export_csr2bin( A, "spike/nlpkkt240.mat.bin")

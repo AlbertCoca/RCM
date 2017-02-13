@@ -45,7 +45,7 @@
 #include <string.h>
 
 
-#define MAX_GRAPH_SIZE_TO_DISPLAY  50
+#define MAX_GRAPH_SIZE_TO_DISPLAY  100
 #define DEBUD_DENSE_MATRIX_PRINT   1
 #define CGRAPH_DEBUG               1
 

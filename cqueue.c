@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#include "cqueue.h"
+#include "linkedQueue.h"
 
 Queue* QueueInit( int MaxSizeGuess )
 {
